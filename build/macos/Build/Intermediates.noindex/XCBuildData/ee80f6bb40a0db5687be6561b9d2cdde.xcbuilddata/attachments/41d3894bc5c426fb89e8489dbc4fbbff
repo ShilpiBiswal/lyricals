@@ -1,0 +1,48 @@
+{
+  "" : {
+    "diagnostics" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/audioplayers_darwin-master.dia",
+    "emit-module-dependencies" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/audioplayers_darwin-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/audioplayers_darwin-master-emit-module.dia",
+    "swift-dependencies" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/audioplayers_darwin-master.swiftdeps"
+  },
+  "/Users/skbiswal/.pub-cache/hosted/pub.dev/audioplayers_darwin-6.0.0/macos/Classes/AudioContext.swift" : {
+    "const-values" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/AudioContext.swiftconstvalues",
+    "dependencies" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/AudioContext.d",
+    "diagnostics" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/AudioContext.dia",
+    "index-unit-output-path" : "/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/AudioContext.o",
+    "llvm-bc" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/AudioContext.bc",
+    "object" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/AudioContext.o",
+    "swift-dependencies" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/AudioContext.swiftdeps",
+    "swiftmodule" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/AudioContext~partial.swiftmodule"
+  },
+  "/Users/skbiswal/.pub-cache/hosted/pub.dev/audioplayers_darwin-6.0.0/macos/Classes/SwiftAudioplayersDarwinPlugin.swift" : {
+    "const-values" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/SwiftAudioplayersDarwinPlugin.swiftconstvalues",
+    "dependencies" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/SwiftAudioplayersDarwinPlugin.d",
+    "diagnostics" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/SwiftAudioplayersDarwinPlugin.dia",
+    "index-unit-output-path" : "/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/SwiftAudioplayersDarwinPlugin.o",
+    "llvm-bc" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/SwiftAudioplayersDarwinPlugin.bc",
+    "object" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/SwiftAudioplayersDarwinPlugin.o",
+    "swift-dependencies" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/SwiftAudioplayersDarwinPlugin.swiftdeps",
+    "swiftmodule" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/SwiftAudioplayersDarwinPlugin~partial.swiftmodule"
+  },
+  "/Users/skbiswal/.pub-cache/hosted/pub.dev/audioplayers_darwin-6.0.0/macos/Classes/Utils.swift" : {
+    "const-values" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/Utils.swiftconstvalues",
+    "dependencies" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/Utils.d",
+    "diagnostics" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/Utils.dia",
+    "index-unit-output-path" : "/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/Utils.o",
+    "llvm-bc" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/Utils.bc",
+    "object" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/Utils.o",
+    "swift-dependencies" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/Utils.swiftdeps",
+    "swiftmodule" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/Utils~partial.swiftmodule"
+  },
+  "/Users/skbiswal/.pub-cache/hosted/pub.dev/audioplayers_darwin-6.0.0/macos/Classes/WrappedMediaPlayer.swift" : {
+    "const-values" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/WrappedMediaPlayer.swiftconstvalues",
+    "dependencies" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/WrappedMediaPlayer.d",
+    "diagnostics" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/WrappedMediaPlayer.dia",
+    "index-unit-output-path" : "/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/WrappedMediaPlayer.o",
+    "llvm-bc" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/WrappedMediaPlayer.bc",
+    "object" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/WrappedMediaPlayer.o",
+    "swift-dependencies" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/WrappedMediaPlayer.swiftdeps",
+    "swiftmodule" : "/Users/skbiswal/development/audioplayer/build/macos/Build/Intermediates.noindex/Pods.build/Debug/audioplayers_darwin.build/Objects-normal/arm64/WrappedMediaPlayer~partial.swiftmodule"
+  }
+}
