@@ -13,16 +13,25 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Just Audio',
+      title: 'Elegant Audio Player',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        brightness: Brightness.dark,
+        fontFamily: 'Roboto',
+      ),
       home: const AudioPlayerScreen(),
     );
   }
 }
 
 class PositionData {
-  const PositionData(this.position, this.bufferedPosition, this.duration);
+  const PositionData(
+    this.position,
+    this.bufferedPosition,
+    this.duration,
+  );
+
   final Duration position;
   final Duration bufferedPosition;
   final Duration duration;
@@ -43,11 +52,16 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   Map<Duration, String> _lyrics = {};
   int _currentLyricIndex = 0;
 
-  Stream<PositionData> get _positionDataStream => Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
+  Stream<PositionData> get _positionDataStream =>
+      Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
         _mutedAudioPlayer.positionStream,
         _mutedAudioPlayer.bufferedPositionStream,
         _mutedAudioPlayer.durationStream,
-        (position, bufferedPosition, duration) => PositionData(position, bufferedPosition, duration ?? Duration.zero),
+        (position, bufferedPosition, duration) => PositionData(
+          position,
+          bufferedPosition,
+          duration ?? Duration.zero,
+        ),
       );
 
   @override
@@ -77,9 +91,6 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
         _lyrics = fetchedLyrics;
       });
     }).catchError((error) {
-      setState(() {
-        _lyrics = {};
-      });
       print(error);
     });
   }
@@ -248,7 +259,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
 [06:25.85]Krishno Krishno hare hare
 [06:28.85]Hare Ram hare Ram
 [06:30.53]Ram Ram hare hare
-''';
+    ''';
 
     return parseLyrics(lrcContent);
   }
@@ -278,85 +289,125 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
         elevation: 0,
         leading: IconButton(
           onPressed: () {},
-          icon: const Icon(Icons.more_horiz),
+          icon: const Icon(Icons.more_horiz, color: Colors.white),
         ),
       ),
       body: Container(
-        padding: const EdgeInsets.all(20),
-        height: double.infinity,
-        width: double.infinity,
-        decoration: const BoxDecoration(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFF144771), Color(0xFF071A2C)],
+            colors: [Colors.purple.shade900, Colors.black],
           ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            StreamBuilder<PositionData>(
-              stream: _positionDataStream,
-              builder: (context, snapshot) {
-                final positionData = snapshot.data;
-                return ProgressBar(
-                  progress: positionData?.position ?? Duration.zero,
-                  buffered: positionData?.bufferedPosition ?? Duration.zero,
-                  total: positionData?.duration ?? Duration.zero,
-                  onSeek: _mutedAudioPlayer.seek,
-                  thumbColor: Colors.white,
-                  baseBarColor: Colors.grey,
-                  bufferedBarColor: Colors.green,
-                  progressBarColor: Colors.blue,
-                );
-              },
-            ),
-            const SizedBox(height: 20),
-            Controls(
-              mutedAudioPlayer: _mutedAudioPlayer,
-              newAudioPlayer: _newAudioPlayer,
-              speedOptions: _speedOptions,
-              onSpeedChanged: (speed) {
-                setState(() {
-                  _playbackSpeed = speed;
-                  _mutedAudioPlayer.setSpeed(_playbackSpeed);
-                });
-              },
-              selectedSpeed: _playbackSpeed,
-            ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: SingleChildScrollView(
-                child: StreamBuilder<PositionData>(
-                  stream: _positionDataStream,
-                  builder: (context, snapshot) {
-                    final positionData = snapshot.data;
-                    final currentPosition = positionData?.position ?? Duration.zero;
-
-                    _currentLyricIndex = _lyrics.keys.toList().indexWhere((duration) => duration > currentPosition) - 1;
-
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: _lyrics.entries.map((entry) {
-                        final isActive = _currentLyricIndex >= 0 && entry.key == _lyrics.keys.elementAt(_currentLyricIndex);
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4),
-                          child: Text(
-                            entry.value,
-                            style: TextStyle(
-                              color: isActive ? Colors.white : Colors.white54,
-                              fontSize: isActive ? 16 : 14,
-                              fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    );
-                  },
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 20),
+              const Text(
+                'Now Playing',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 10),
+              const Text(
+                'Hare Krishna',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const Text(
+                'Vivek Prakash',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 18,
+                ),
+              ),
+              const SizedBox(height: 30),
+              StreamBuilder<PositionData>(
+                stream: _positionDataStream,
+                builder: (context, snapshot) {
+                  final positionData = snapshot.data;
+                  return ProgressBar(
+                    progress: positionData?.position ?? Duration.zero,
+                    buffered: positionData?.bufferedPosition ?? Duration.zero,
+                    total: positionData?.duration ?? Duration.zero,
+                    onSeek: _mutedAudioPlayer.seek,
+                    thumbColor: Colors.white,
+                    baseBarColor: Colors.white.withOpacity(0.24),
+                    bufferedBarColor: Colors.white.withOpacity(0.24),
+                    progressBarColor: Colors.white,
+                    thumbGlowColor: Colors.white.withOpacity(0.24),
+                    barHeight: 3.0,
+                    thumbRadius: 8.0,
+                    timeLabelTextStyle: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              Controls(
+                mutedAudioPlayer: _mutedAudioPlayer,
+                newAudioPlayer: _newAudioPlayer,
+                speedOptions: _speedOptions,
+                onSpeedChanged: (speed) {
+                  setState(() {
+                    _playbackSpeed = speed;
+                    _mutedAudioPlayer.setSpeed(_playbackSpeed);
+                  });
+                },
+                selectedSpeed: _playbackSpeed,
+              ),
+              const SizedBox(height: 20),
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Container(
+                    color: Colors.white.withOpacity(0.1),
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(16),
+                      child: StreamBuilder<PositionData>(
+                        stream: _positionDataStream,
+                        builder: (context, snapshot) {
+                          final positionData = snapshot.data;
+                          final currentPosition = positionData?.position ?? Duration.zero;
+
+                          _currentLyricIndex = _lyrics.keys.toList().indexWhere((duration) => duration > currentPosition) - 1;
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: _lyrics.entries.map((entry) {
+                              final isActive = _currentLyricIndex >= 0 && entry.key == _lyrics.keys.elementAt(_currentLyricIndex);
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 8),
+                                child: Text(
+                                  entry.value,
+                                  style: TextStyle(
+                                    color: isActive ? Colors.white : Colors.white70,
+                                    fontSize: isActive ? 18 : 16,
+                                    fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -382,33 +433,54 @@ class Controls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         IconButton(
-          icon: Icon(mutedAudioPlayer.playing ? Icons.pause : Icons.play_arrow),
+          icon: const Icon(Icons.skip_previous, color: Colors.white, size: 36),
           onPressed: () {
-            if (mutedAudioPlayer.playing) {
-              mutedAudioPlayer.pause();
-              newAudioPlayer.pause();
-            } else {
-              mutedAudioPlayer.play();
-              newAudioPlayer.play();
-            }
+            // Implement previous track functionality
           },
         ),
-        DropdownButton<double>(
-          value: selectedSpeed,
-          items: speedOptions.map((speed) {
-            return DropdownMenuItem<double>(
-              value: speed,
-              child: Text('${speed}x'),
-            );
-          }).toList(),
-          onChanged: (newSpeed) {
-            if (newSpeed != null) {
-              onSpeedChanged(newSpeed);
-            }
+        Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white.withOpacity(0.1),
+          ),
+          child: IconButton(
+            icon: Icon(
+              mutedAudioPlayer.playing ? Icons.pause : Icons.play_arrow,
+              color: Colors.white,
+              size: 48,
+            ),
+            onPressed: () {
+              if (mutedAudioPlayer.playing) {
+                mutedAudioPlayer.pause();
+                newAudioPlayer.pause();
+              } else {
+                mutedAudioPlayer.play();
+                newAudioPlayer.play();
+              }
+            },
+          ),
+        ),
+        IconButton(
+          icon: const Icon(Icons.skip_next, color: Colors.white, size: 36),
+          onPressed: () {
+            // Implement next track functionality
           },
+        ),
+        PopupMenuButton<double>(
+          icon: const Icon(Icons.speed, color: Colors.white),
+          onSelected: onSpeedChanged,
+          itemBuilder: (BuildContext context) {
+            return speedOptions.map((speed) {
+              return PopupMenuItem<double>(
+                value: speed,
+                child: Text('${speed}x'),
+              );
+            }).toList();
+          },
+          color: Colors.grey[850],
         ),
       ],
     );
