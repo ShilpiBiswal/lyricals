@@ -2,8 +2,6 @@ import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 void main() {
   runApp(const MyApp());
@@ -38,40 +36,64 @@ class AudioPlayerScreen extends StatefulWidget {
 }
 
 class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
-  late AudioPlayer _audioPlayer;
+  late AudioPlayer _mutedAudioPlayer;
+  late AudioPlayer _newAudioPlayer;
   double _playbackSpeed = 1.0;
   final List<double> _speedOptions = [0.5, 1.0, 1.5, 2.0];
-  Map<Duration, String> _lyrics = {}; // Lyrics map
+  Map<Duration, String> _lyrics = {};
   int _currentLyricIndex = 0;
 
-  // Stream to combine position, buffered position, and duration
   Stream<PositionData> get _positionDataStream => Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
-        _audioPlayer.positionStream,
-        _audioPlayer.bufferedPositionStream,
-        _audioPlayer.durationStream,
+        _mutedAudioPlayer.positionStream,
+        _mutedAudioPlayer.bufferedPositionStream,
+        _mutedAudioPlayer.durationStream,
         (position, bufferedPosition, duration) => PositionData(position, bufferedPosition, duration ?? Duration.zero),
       );
 
   @override
   void initState() {
     super.initState();
-    _audioPlayer = AudioPlayer()..setAsset('assets/audio/hare1.mp3');
+    _mutedAudioPlayer = AudioPlayer()..setAsset('assets/audio/hare1.mp3')..setVolume(0);
+    _newAudioPlayer = AudioPlayer()..setAsset('assets/audio/ambient.mp3');
 
-    // Fetch lyrics from the LRC format
-    fetchLyrics('vivek prakash', 'hare krishna').then((fetchedLyrics) {
+    _mutedAudioPlayer.playerStateStream.listen((playerState) {
+      if (playerState.processingState == ProcessingState.completed) {
+        _newAudioPlayer.pause();
+      }
+    });
+
+    _newAudioPlayer.playerStateStream.listen((playerState) {
+      if (playerState.processingState == ProcessingState.completed) {
+        _newAudioPlayer.seek(Duration.zero);
+        _newAudioPlayer.play();
+      }
+    });
+
+    _mutedAudioPlayer.play();
+    _newAudioPlayer.play();
+
+    fetchLyrics('new artist', 'new song title').then((fetchedLyrics) {
       setState(() {
-        _lyrics = fetchedLyrics; // Store the fetched lyrics
+        _lyrics = fetchedLyrics;
       });
     }).catchError((error) {
       setState(() {
-        _lyrics = {}; // Handle error by resetting lyrics
+        _lyrics = {};
       });
       print(error);
     });
   }
 
+  @override
+  void dispose() {
+    _mutedAudioPlayer.dispose();
+    _newAudioPlayer.dispose();
+    super.dispose();
+  }
+
   Future<Map<Duration, String>> fetchLyrics(String artist, String title) async {
     // Simulating fetching LRC content
+    // Replace this with actual lyrics for your new song
     final lrcContent = '''
 [00:00.33]Hare Krishna Hare Krishna Krishna - Vivek Prakash
 [00:24.01]Hare Krishno hare Krishno
@@ -248,12 +270,6 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   }
 
   @override
-  void dispose() {
-    _audioPlayer.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -279,8 +295,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            // Progress bar for audio
-            StreamBuilder(
+            StreamBuilder<PositionData>(
               stream: _positionDataStream,
               builder: (context, snapshot) {
                 final positionData = snapshot.data;
@@ -288,7 +303,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                   progress: positionData?.position ?? Duration.zero,
                   buffered: positionData?.bufferedPosition ?? Duration.zero,
                   total: positionData?.duration ?? Duration.zero,
-                  onSeek: _audioPlayer.seek,
+                  onSeek: _mutedAudioPlayer.seek,
                   thumbColor: Colors.white,
                   baseBarColor: Colors.grey,
                   bufferedBarColor: Colors.green,
@@ -297,20 +312,19 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
               },
             ),
             const SizedBox(height: 20),
-            // Audio controls
             Controls(
-              audioPlayer: _audioPlayer,
+              mutedAudioPlayer: _mutedAudioPlayer,
+              newAudioPlayer: _newAudioPlayer,
               speedOptions: _speedOptions,
               onSpeedChanged: (speed) {
                 setState(() {
                   _playbackSpeed = speed;
-                  _audioPlayer.setSpeed(_playbackSpeed);
+                  _mutedAudioPlayer.setSpeed(_playbackSpeed);
                 });
               },
               selectedSpeed: _playbackSpeed,
             ),
             const SizedBox(height: 20),
-            // Scrollable lyrics
             Expanded(
               child: SingleChildScrollView(
                 child: StreamBuilder<PositionData>(
@@ -319,10 +333,8 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                     final positionData = snapshot.data;
                     final currentPosition = positionData?.position ?? Duration.zero;
 
-                    // Update the current lyric index based on current position
                     _currentLyricIndex = _lyrics.keys.toList().indexWhere((duration) => duration > currentPosition) - 1;
 
-                    // Display lyrics
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: _lyrics.entries.map((entry) {
@@ -352,13 +364,15 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
 }
 
 class Controls extends StatelessWidget {
-  final AudioPlayer audioPlayer;
+  final AudioPlayer mutedAudioPlayer;
+  final AudioPlayer newAudioPlayer;
   final List<double> speedOptions;
   final Function(double) onSpeedChanged;
   final double selectedSpeed;
 
   const Controls({
-    required this.audioPlayer,
+    required this.mutedAudioPlayer,
+    required this.newAudioPlayer,
     required this.speedOptions,
     required this.onSpeedChanged,
     required this.selectedSpeed,
@@ -371,12 +385,14 @@ class Controls extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         IconButton(
-          icon: Icon(audioPlayer.playing ? Icons.pause : Icons.play_arrow),
+          icon: Icon(mutedAudioPlayer.playing ? Icons.pause : Icons.play_arrow),
           onPressed: () {
-            if (audioPlayer.playing) {
-              audioPlayer.pause();
+            if (mutedAudioPlayer.playing) {
+              mutedAudioPlayer.pause();
+              newAudioPlayer.pause();
             } else {
-              audioPlayer.play();
+              mutedAudioPlayer.play();
+              newAudioPlayer.play();
             }
           },
         ),

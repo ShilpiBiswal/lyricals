@@ -74,7 +74,7 @@
                     }
                 },
                 {
-                    "source": "/Users/skbiswal/development/audioplayer/android/app/src/main/res/values/styles.xml",
+                    "source": "/Users/skbiswal/lyricals/android/app/src/main/res/values/styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
